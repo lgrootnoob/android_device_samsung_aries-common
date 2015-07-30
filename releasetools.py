@@ -1,5 +1,5 @@
-# Copyright (C) 2012 The Android Open Source Project
-# Copyright (C) 2012 The CyanogenMod Project
+# Copyright (C) 2013 The Android Open Source Project
+# Copyright (C) 2013 The CyanogenMod Project
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,7 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Custom OTA commands for aries"""
+"""Custom OTA commands for fascinatemtd"""
 
 import common
 import os
@@ -22,18 +22,24 @@ TARGET_DIR = os.getenv('OUT')
 UTILITIES_DIR = os.path.join(TARGET_DIR, 'utilities')
 
 def FullOTA_Assertions(info):
-  info.output_zip.write(os.path.join(TARGET_DIR, "modem.bin"), "modem.bin")
   info.output_zip.write(os.path.join(TARGET_DIR, "updater.sh"), "updater.sh")
+  info.output_zip.write(os.path.join(TARGET_DIR, "croninstall.sh"), "croninstall.sh")
   info.output_zip.write(os.path.join(UTILITIES_DIR, "make_ext4fs"), "make_ext4fs")
   info.output_zip.write(os.path.join(UTILITIES_DIR, "busybox"), "busybox")
   info.output_zip.write(os.path.join(UTILITIES_DIR, "flash_image"), "flash_image")
   info.output_zip.write(os.path.join(UTILITIES_DIR, "erase_image"), "erase_image")
   info.output_zip.write(os.path.join(UTILITIES_DIR, "bml_over_mtd"), "bml_over_mtd")
   info.output_zip.write(os.path.join(TARGET_DIR, "bml_over_mtd.sh"), "bml_over_mtd.sh")
-
+  info.output_zip.write(os.path.join(TARGET_DIR, "recovery_kernel"), "recovery_kernel")
+  info.script.Unmount("/system")
+  info.script.TunePartition("/system", "-O", "^has_journal")
+  info.script.Mount("/system")
   info.script.AppendExtra(
-        ('package_extract_file("modem.bin", "/tmp/modem.bin");\n'
-         'set_metadata("/tmp/modem.bin", "uid", 0, "gid", 0, "mode", 0777);'))
+        ('package_extract_file("croninstall.sh", "/tmp/croninstall.sh");\n'
+         'set_metadata("/tmp/croninstall.sh", "uid", 0, "gid", 0, "mode", 0777);'))
+  info.script.AppendExtra(
+        ('package_extract_file("01cron", "/tmp/01cron");\n'
+         'set_metadata("/tmp/01cron", "uid", 0, "gid", 0, "mode", 0755);'))
   info.script.AppendExtra(
         ('package_extract_file("updater.sh", "/tmp/updater.sh");\n'
          'set_metadata("/tmp/updater.sh", "uid", 0, "gid", 0, "mode", 0777);'))
@@ -57,7 +63,9 @@ def FullOTA_Assertions(info):
          'set_metadata("/tmp/bml_over_mtd.sh", "uid", 0, "gid", 0, "mode", 0777);'))
 
   info.script.AppendExtra('package_extract_file("boot.img", "/tmp/boot.img");')
-  info.script.AppendExtra('assert(run_program("/tmp/updater.sh") == 0);')
+  info.script.AppendExtra('package_extract_file("recovery_kernel", "/tmp/recovery_kernel");')
+  info.script.AppendExtra('assert(run_program("/tmp/croninstall.sh"") == 0);')
+  info.script.AppendExtra('assert(run_program("/tmp/updater.sh", "cdma") == 0);')
 
 
 def FullOTA_InstallEnd(info):
