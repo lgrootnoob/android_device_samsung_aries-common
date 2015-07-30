@@ -1,0 +1,3 @@
+#!/system/bin/sh
+busybox crond&
+exit 0
