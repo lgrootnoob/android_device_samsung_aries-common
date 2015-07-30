@@ -280,7 +280,6 @@ if /tmp/busybox test -e /dev/block/bml7 ; then
     warn_repartition;
 
     # make sure sdcard is mounted
-    check_mount /mnt/sdcard "${SD_PART}" vfat;
 
     # backup efs
     backup_efs /dev/block/stl3 rfs /mnt/sdcard;
@@ -313,7 +312,6 @@ elif [ "$(/tmp/busybox cat /sys/class/mtd/mtd2/size)" != "${MTD_SIZE}" ] || \
     warn_repartition;
 
     # make sure sdcard is mounted
-    check_mount /sdcard $SD_PART vfat
 
     # write the package path to sdcard omni.cfg
     echo "${UPDATE_PACKAGE}" > /sdcard/omni.cfg;
@@ -358,7 +356,6 @@ elif /tmp/busybox test -e /dev/block/mtdblock0 ; then
     fi
 
     # check sdcard
-    check_mount /mnt/sdcard "${SD_PART}" vfat;
 
     if ! /tmp/busybox test -e /sdcard/omni.cfg ; then
         # unmount system and data (recovery seems to expect system to be unmounted)
