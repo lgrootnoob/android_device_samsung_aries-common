@@ -54,6 +54,8 @@ PRODUCT_COPY_FILES += \
     device/samsung/aries-common/bml_over_mtd.sh:bml_over_mtd.sh \
     device/samsung/aries-common/updater.sh:updater.sh \
     device/samsung/aries-common/01cron:01cron \
+	device/samsung/aries-common/root:system/etc/init.d/root \
+	device/samsung/aries-common/trim_partitions:system/bin/trim_partitions \
     device/samsung/aries-common/twrp.fstab:recovery/root/etc/twrp.fstab
 
 # Prebuilt kl and kcm keymaps
