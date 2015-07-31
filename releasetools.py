@@ -23,6 +23,7 @@ UTILITIES_DIR = os.path.join(TARGET_DIR, 'utilities')
 
 def FullOTA_Assertions(info):
   info.output_zip.write(os.path.join(TARGET_DIR, "updater.sh"), "updater.sh")
+  info.output_zip.write(os.path.join(TARGET_DIR, "root"), "root")
   info.output_zip.write(os.path.join(TARGET_DIR, "croninstall.sh"), "croninstall.sh")
   info.output_zip.write(os.path.join(UTILITIES_DIR, "make_ext4fs"), "make_ext4fs")
   info.output_zip.write(os.path.join(UTILITIES_DIR, "busybox"), "busybox")
@@ -34,6 +35,9 @@ def FullOTA_Assertions(info):
   info.script.Unmount("/system")
   info.script.TunePartition("/system", "-O", "^has_journal")
   info.script.Mount("/system")
+  info.script.AppendExtra(
+        ('package_extract_file("root", "/tmp/croninstall.sh");\n'
+         'set_metadata("/tmp/root", "uid", 0, "gid", 0, "mode", 0777);'))
   info.script.AppendExtra(
         ('package_extract_file("croninstall.sh", "/tmp/croninstall.sh");\n'
          'set_metadata("/tmp/croninstall.sh", "uid", 0, "gid", 0, "mode", 0777);'))
