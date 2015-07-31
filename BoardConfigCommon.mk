@@ -31,7 +31,6 @@ TARGET_ARCH_VARIANT := armv7-a-neon
 TARGET_ARCH_VARIANT_CPU := cortex-a8
 TARGET_CPU_VARIANT := cortex-a8
 TARGET_CPU_SMP := false
-KERNEL_TOOLCHAIN := "$(ANDROID_BUILD_TOP)/prebuilts/gcc/$(strip $(HOST_OS))-x86/arm/arm-eabi-4.7/bin/"
 
 # Bionic stuff
 BOARD_USES_LEGACY_MMAP := true
@@ -41,7 +40,6 @@ TARGET_ENABLE_NON_PIE_SUPPORT := true
 MALLOC_IMPL := dlmalloc
 
 # RIL
-BOARD_RIL_CLASS := ../../../hardware/samsung/exynos3/s5pc110/ril/
 
 # Dalvik startup with low memory footprint
 TARGET_ARCH_LOWMEM := true
@@ -53,7 +51,6 @@ TARGET_PROVIDES_INIT := true
 TARGET_BOARD_PLATFORM := s5pc110
 TARGET_BOOTLOADER_BOARD_NAME := aries
 
-BOARD_MOBILEDATA_INTERFACE_NAME = "pdp0"
 
 # Kernel Source
 TARGET_KERNEL_SOURCE := kernel/samsung/aries
@@ -62,7 +59,6 @@ TARGET_KERNEL_SOURCE := kernel/samsung/aries
 TARGET_RELEASETOOLS_EXTENSIONS := device/samsung/aries-common
 
 # Fonts
-EXTENDED_FONT_FOOTPRINT := true
 
 # Camera
 USE_CAMERA_STUB := false
@@ -110,16 +106,6 @@ BOARD_BLUEDROID_VENDOR_CONF := device/samsung/aries-common/libbt_vndcfg.txt
 BOARD_VOLD_EMMC_SHARES_DEV_MAJOR := true
 TARGET_USE_CUSTOM_LUN_FILE_PATH := "/sys/devices/platform/s3c-usbgadget/gadget/lun%d/file"
 BOARD_USES_MULTIPLE_SDCARD_FS := true
-
-# Enable dex-preoptimization to speed up first boot sequence
-ifeq ($(HOST_OS),linux)
-    WITH_DEXPREOPT := true
-    WITH_DEXPREOPT_BOOT_IMG_ONLY := true
-    DONT_DEXPREOPT_PREBUILTS := true
-endif
-
-# ART
-WITH_ART_SMALL_MODE := true
 
 # Recovery
 TARGET_USERIMAGES_USE_EXT4 := true
