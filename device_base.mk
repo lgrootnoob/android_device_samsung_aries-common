@@ -53,9 +53,6 @@ PRODUCT_COPY_FILES += \
     device/samsung/aries-common/setupdatadata.sh:root/sbin/setupdatadata.sh \
     device/samsung/aries-common/bml_over_mtd.sh:bml_over_mtd.sh \
     device/samsung/aries-common/updater.sh:updater.sh \
-    device/samsung/aries-common/01cron:01cron \
-	device/samsung/aries-common/root:system/etc/init.d/root \
-	device/samsung/aries-common/trim_partitions:system/bin/trim_partitions \
     device/samsung/aries-common/twrp.fstab:recovery/root/etc/twrp.fstab
 
 # Prebuilt kl and kcm keymaps
@@ -206,8 +203,8 @@ PRODUCT_PROPERTY_OVERRIDES += \
 # ART
 PRODUCT_PROPERTY_OVERRIDES += \
     dalvik.vm.dex2oat-flags=--no-watch-dog \
-    dalvik.vm.dex2oat-filter=balanced \
-    dalvik.vm.image-dex2oat-filter=speed
+    dalvik.vm.dex2oat-filter=everything \
+    dalvik.vm.image-dex2oat-filter=everything
 
 # Camera
 PRODUCT_PROPERTY_OVERRIDES += \
@@ -249,12 +246,8 @@ PRODUCT_PROPERTY_OVERRIDES += \
 PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
     persist.sys.usb.config=mtp
 
-# ART
-PRODUCT_DEX_PREOPT_DEFAULT_FLAGS := \
-    --compiler-filter=interpret-only
-
 include frameworks/native/build/phone-hdpi-512-dalvik-heap.mk
 
-$(call add-product-dex-preopt-module-config,services,--compiler-filter=speed)
+$(call add-product-dex-preopt-module-config,services,--compiler-filter=everything)
 
 $(call inherit-product-if-exists, hardware/broadcom/wlan/bcmdhd/firmware/bcm4329/device-bcm.mk)
