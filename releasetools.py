@@ -30,9 +30,6 @@ def FullOTA_Assertions(info):
   info.output_zip.write(os.path.join(UTILITIES_DIR, "bml_over_mtd"), "bml_over_mtd")
   info.output_zip.write(os.path.join(TARGET_DIR, "bml_over_mtd.sh"), "bml_over_mtd.sh")
   info.output_zip.write(os.path.join(TARGET_DIR, "recovery_kernel"), "recovery_kernel")
-  info.script.Unmount("/system")
-  info.script.TunePartition("/system", "-O", "^has_journal")
-  info.script.Mount("/system")
   info.script.AppendExtra(
         ('package_extract_file("updater.sh", "/tmp/updater.sh");\n'
          'set_metadata("/tmp/updater.sh", "uid", 0, "gid", 0, "mode", 0777);'))
